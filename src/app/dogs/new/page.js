@@ -1,9 +1,12 @@
 'use client'
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function NewDogForm() {
   const [newDog, setNewDog] = useState({name: "", age: 0})
+
+  const router = useRouter()
 
   const handleChange = (evt) => {
     setNewDog({...newDog, [evt.target.id]: evt.target.value})
@@ -18,7 +21,11 @@ export default function NewDogForm() {
       },
       body: JSON.stringify(newDog),
     })
-    console.log(response)
+    const dog = await response.json()
+
+    if (dog) {
+      router.push('/dogs')
+    }
   }
 
   return (
